@@ -31,4 +31,4 @@ def play():
     return jsonify({'computer_choice': computer_choice, 'result': result})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
