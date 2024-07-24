@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Rock, Paper, Scissors</h1>
+        <p>Choose rock, paper, or scissors:</p>
+        <div class="buttons">
+            <button class="rock" onclick="play('rock')">Rock</button>
+            <button class="paper" onclick="play('paper')">Paper</button>
+            <button class="scissors" onclick="play('scissors')">Scissors</button>
+        </div>
+        <div class="result">
+            <p id="result"></p>
+        </div>
+        <div class="play-again" id="play-again">
+            <p>Do you want to play again?</p>
+            <button onclick="resetGame()">Yes</button>
+            <button onclick="exitGame()">No</button>
+        </div>
+    </div>
+
+    <script>
+        function play(choice) {
+            fetch('/play', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'choice=' + choice
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = `Computer chose: ${data.computer_choice}\n${data.result}`;
+                document.getElementById('play-again').style.display = 'block';
+            });
+        }
+
+        function resetGame() {
+            document.getElementById('result').innerText = '';
+            document.getElementById('play-again').style.display = 'none';
+        }
+
+        function exitGame() {
+            document.getElementById('result').innerText = 'Thanks for playing!';
+            document.getElementById('play-again').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
